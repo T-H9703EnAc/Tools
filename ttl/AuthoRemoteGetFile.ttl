@@ -3,6 +3,8 @@
 HOSTADDR = '任意のIPアドレス'
 USERNAME = 'username'
 PASSWORD = 'password'
+;いらないかも
+LOGPATH = 'C:\log\'
 ;==================================================
 
 ;①コマンドオプション組み立て
