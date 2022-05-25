@@ -1,0 +1,43 @@
+;==================================================
+;接続情報
+HOSTADDR = '任意のIPアドレス'
+USERNAME = 'username'
+PASSWORD = 'password'
+;==================================================
+
+;①コマンドオプション組み立て
+strconcat COMMAND ':22 /ssh /2 auth=password /user='
+strconcat COMMAND USERNAME
+strconcat COMMAND ' /passwd='
+strconcat COMMAND PASSWORD
+
+;②接続
+connect COMMAND
+;==================================================
+
+if result <> 2 then
+    ;;③接続判定1(接続できない場合)
+    messagebox 'Failed Connection'
+    end
+endif
+    ;;④接続判定2(タイムアウト(10秒を超えた)場合)
+    timeout =10
+    wait '$' '#'
+    if result=0 then
+        disconnect 0
+        end
+endif
+    ;;ファイルを取得
+    sendln 'cd 対象のファイルがある場所'
+    sendln 'ls -rt | tail -n 1'
+    recvln
+    recvln
+    recvln
+    LOGFILENAME=inputstr
+    sendln 'echo ' LOGFILENAME
+    getdir DIR
+    scprecv LOGFILENAME DIR
+    mpause 10000
+
+;;⑥マクロ終了
+end
